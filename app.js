@@ -1,25 +1,44 @@
-const ROWS = 5;
-const COLS = 3;
+const BOARD = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]
+const ROWS = BOARD.length;
+const COLS = BOARD[0].length;
+
+const flattenedBoard = Array.prototype.concat.apply([], BOARD);
+
 
 const container = document.getElementById('container');
 
 function makeRows(rows, cols) {
+
+
   container.style.setProperty('--grid-rows', rows);
   container.style.setProperty('--grid-cols', cols);
   for (let nthTile = 0; nthTile < (rows * cols); nthTile++) {
-    let cell = document.createElement("div");
-    cell.innerText = String.fromCharCode(65 + nthTile);
-    // String.fromCharCode(65 + c + 1)
-    container.appendChild(cell).className = "grid-item";
+    let tile = document.createElement("div");
+    tile.innerText = flattenedBoard[nthTile];
+
+    container.appendChild(tile).className = "grid-item";
   };
 };
 
-// const itemList = document.querySelectorAll('#container');
+// iterate through each tile
+function visitTiles(listOfTiles) {
+  let i = 0;                 
 
-// console.log(itemList[0].length);
+  function myLoop() {         
+    setTimeout(function() {   
+      listOfTiles[i].classList.add('grid-item-visited');
+
+      i++;
+      if (i < listOfTiles.length) {          
+        myLoop();             
+      }                       
+    }, 500);
+  }
+
+  myLoop();
+}
+
 makeRows(ROWS, COLS);
 
-// iterate through each tile
-for (let item of container.children) {
-  console.log(item.getAttribute('class'));
-}
+const tileList = Array.from(document.querySelector('#container').children);
+visitTiles(tileList);
