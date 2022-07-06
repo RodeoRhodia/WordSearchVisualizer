@@ -1,7 +1,7 @@
 const ROWS = 5;
 const COLS = 3;
 
-const container = document.getElementById("container");
+const container = document.getElementById('container');
 
 function makeRows(rows, cols) {
   container.style.setProperty('--grid-rows', rows);
@@ -14,4 +14,12 @@ function makeRows(rows, cols) {
   };
 };
 
+// const itemList = document.querySelectorAll('#container');
+
+// console.log(itemList[0].length);
 makeRows(ROWS, COLS);
+
+// iterate through each tile
+for (let item of container.children) {
+  console.log(item.getAttribute('class'));
+}
