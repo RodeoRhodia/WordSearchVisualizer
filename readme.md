@@ -28,3 +28,6 @@ https://www.youtube.com/watch?v=YszONjKpgg4
 
 The Best Way to Enable CSS Animations with JavaScript [ classList toggle('animationClass') ]
 https://www.youtube.com/watch?v=kgqMcFrT51o
+
+How do I add a delay in a JavaScript loop?
+https://stackoverflow.com/questions/3583724/how-do-i-add-a-delay-in-a-javascript-loop
