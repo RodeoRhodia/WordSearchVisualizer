@@ -1,44 +1,89 @@
-const BOARD = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]
-const ROWS = BOARD.length;
-const COLS = BOARD[0].length;
+// Input Data
+const CHAR_BOARD = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]
+const ROWS = CHAR_BOARD.length;
+const COLS = CHAR_BOARD[0].length;
+const WORD = "ABCCED";
 
-const flattenedBoard = Array.prototype.concat.apply([], BOARD);
-
-
+const flattenedBoard = Array.prototype.concat.apply([], CHAR_BOARD);
 const container = document.getElementById('container');
 
-function makeRows(rows, cols) {
-
+function makeTileBoard(rows, cols) {
+  let tileBoard = new Array();
 
   container.style.setProperty('--grid-rows', rows);
   container.style.setProperty('--grid-cols', cols);
-  for (let nthTile = 0; nthTile < (rows * cols); nthTile++) {
-    let tile = document.createElement("div");
-    tile.innerText = flattenedBoard[nthTile];
 
-    container.appendChild(tile).className = "grid-item";
-  };
-};
+
+  for (let r = 0; r < rows; r++) {
+    let tileBoardRow = new Array();
+
+    for (let c = 0; c < cols; c++) {
+      let tileElement = document.createElement("div");
+      tileElement.innerText = CHAR_BOARD[r][c];
+      
+      container.appendChild(tileElement).className = "grid-item";
+      let tileObject = {
+        tileChar: CHAR_BOARD[r][c],
+        tileElem: tileElement,
+        isVisited: false,
+        isInPath: false,
+        removeFromPath: function() {
+          tileObject.isInPath = false;
+        },
+        addToPath: function() {
+          tileObject.isInPath = true;
+        },
+        visit: function() {
+          tileObject.isVisited = true;
+        }
+      }
+      tileBoardRow.push(tileObject);
+    }
+    tileBoard.push(tileBoardRow);
+  }
+
+  return tileBoard;
+}
 
 // iterate through each tile
 function visitTiles(listOfTiles) {
-  let i = 0;                 
+  let delayPerTileVisit = 0;
 
-  function myLoop() {         
-    setTimeout(function() {   
-      listOfTiles[i].classList.add('grid-item-visited');
+  for (let r = 0; r < ROWS; r++) {
+    /* Process ROWS with delay */
+    (function (row) {
+      setTimeout(function () {
+        for (let c = 0; c < COLS; c++) {
+          /* Process COLS with delay */
+          (function (col) {
+            setTimeout(
+              // Processings the exact row col Tile
+              function () {
+                const currTile = listOfTiles[r][c];
 
-      i++;
-      if (i < listOfTiles.length) {          
-        myLoop();             
-      }                       
-    }, 500);
+                if (currTile.tileChar == "A") {
+                  currTile.tileElem.className = 'grid-item-inPath';
+                } else {
+                  currTile.tileElem.className = 'grid-item-visited';
+                }
+                
+
+
+              }, c * delayPerTileVisit);
+          })(c);
+        }
+      }, r * COLS * delayPerTileVisit);
+    })(r);
   }
-
-  myLoop();
 }
 
-makeRows(ROWS, COLS);
+let tileBoard = makeTileBoard(ROWS, COLS);
 
-const tileList = Array.from(document.querySelector('#container').children);
-visitTiles(tileList);
+visitTiles(tileBoard);
+
+console.log(tileBoard);
+
+// tileBoard[0][0].classList.remove('grid-item-inPath');
+tileBoard[0][1].tileElem.className = 'grid-item-inPath';
+// console.log(tileBoard[0][0].tileElem.classList.replace('grid-item', 'grid-item-inPath'));
+console.log(tileBoard[0][1].tileChar);
