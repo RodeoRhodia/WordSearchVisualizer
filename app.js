@@ -47,7 +47,7 @@ function makeTileBoard(rows, cols) {
 
 // iterate through each tile
 function visitTiles(listOfTiles) {
-  let delayPerTileVisit = 0;
+  let delayPerTileVisit = 500;
 
   for (let r = 0; r < ROWS; r++) {
     /* Process ROWS with delay */
@@ -61,29 +61,34 @@ function visitTiles(listOfTiles) {
               function () {
                 const currTile = listOfTiles[r][c];
 
-                if (currTile.tileChar == "A") {
+                if (currTile.tileChar == WORD[0]) {
+                  currTile.addToPath();
                   currTile.tileElem.className = 'grid-item-inPath';
                 } else {
+                  currTile.visit();
                   currTile.tileElem.className = 'grid-item-visited';
                 }
-                
-
-
               }, c * delayPerTileVisit);
           })(c);
         }
       }, r * COLS * delayPerTileVisit);
     })(r);
   }
+
+  console.log(listOfTiles[0][0].isVisited);
+  console.log(listOfTiles[0][0].isInPath);
+  console.log(listOfTiles[0][1].isVisited);
+  console.log(listOfTiles[0][1].isInPath);
 }
 
 let tileBoard = makeTileBoard(ROWS, COLS);
 
 visitTiles(tileBoard);
 
-console.log(tileBoard);
+// console.log(tileBoard);
 
 // tileBoard[0][0].classList.remove('grid-item-inPath');
-tileBoard[0][1].tileElem.className = 'grid-item-inPath';
+// tileBoard[0][1].tileElem.classList.add('grid-item-visited');
+// tileBoard[0][1].tileElem.classList.remove('grid-item-visited');
 // console.log(tileBoard[0][0].tileElem.classList.replace('grid-item', 'grid-item-inPath'));
-console.log(tileBoard[0][1].tileChar);
+// console.log(tileBoard[0][1].tileChar);
