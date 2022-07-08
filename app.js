@@ -29,12 +29,15 @@ function makeTileBoard(rows, cols) {
         isInPath: false,
         removeFromPath: function() {
           tileObject.isInPath = false;
+          tileObject.tileElem.className = 'grid-item-visited';
         },
         addToPath: function() {
           tileObject.isInPath = true;
+          tileObject.tileElem.className = 'grid-item-inPath';
         },
         visit: function() {
           tileObject.isVisited = true;
+          tileObject.tileElem.classList.add('grid-item-visited');
         }
       }
       tileBoardRow.push(tileObject);
@@ -46,8 +49,9 @@ function makeTileBoard(rows, cols) {
 }
 
 // iterate through each tile
-function visitTiles(listOfTiles) {
+function visitTiles(board) {
   let delayPerTileVisit = 500;
+  let result = false;
 
   for (let r = 0; r < ROWS; r++) {
     /* Process ROWS with delay */
@@ -59,30 +63,71 @@ function visitTiles(listOfTiles) {
             setTimeout(
               // Processings the exact row col Tile
               function () {
-                const currTile = listOfTiles[r][c];
+                const currTile = board[row][col];
+                currTile.visit();
+                dfs(row, col, 0, board);
 
-                if (currTile.tileChar == WORD[0]) {
-                  currTile.addToPath();
-                  currTile.tileElem.className = 'grid-item-inPath';
-                } else {
-                  currTile.visit();
-                  currTile.tileElem.className = 'grid-item-visited';
-                }
+                // delayedDFS(row, col, 0, listOfTiles);
               }, c * delayPerTileVisit);
           })(c);
         }
       }, r * COLS * delayPerTileVisit);
     })(r);
+
+
+  }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function dfs(row, col, index, board) {
+  if (index == WORD.length) {
+    return true;
+  } else if (row < 0 || col < 0 || 
+    row >= ROWS || col >= COLS ||
+    board[row][col].tileChar != WORD[index] ||
+    board[row][col].isInPath) {
+      return false;
   }
 
-  console.log(listOfTiles[0][0].isVisited);
-  console.log(listOfTiles[0][0].isInPath);
-  console.log(listOfTiles[0][1].isVisited);
-  console.log(listOfTiles[0][1].isInPath);
+  const currTile = board[row][col];
+  console.log(currTile.tileChar);
+
+  currTile.addToPath();
+
+  index += 1;
+
+  // result = (
+  //   dfs(row - 1, col, index, board) || dfs(row + 1, col, index, board) ||
+  //   dfs(row, col - 1, index, board) || dfs(row, col, index + 1, board));
+  
+  currTile.removeFromPath();
+  
+
+  // return result;
+
+
+  
+  // let index = 0;
+
+  // function dfs() {
+  //   setTimeout(function() {
+  //     console.log("THE CODE");
+
+  //     index += 1;
+
+  //     if (index < WORD.length) {
+  //       dfs();
+  //     }
+  //   }, delayPerTileVisit);
+  // }
+
+  // dfs();
 }
 
 let tileBoard = makeTileBoard(ROWS, COLS);
-
 visitTiles(tileBoard);
 
 // console.log(tileBoard);
