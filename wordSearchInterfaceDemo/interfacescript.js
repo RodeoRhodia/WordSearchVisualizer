@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     enableBuildBoardButton();
-    
+    let formcontainer = document.querySelector('.formcontainer');
+    let title = document.getElementById('title');
+
     function enableBuildBoardButton() {
         let buildBoardBtn = document.getElementById('buildboardbtn');
-        let title = document.getElementById('title');
-        let formcontainer = document.querySelector('.formcontainer');
-
         buildBoardBtn.addEventListener('click', () => {
             formcontainer.removeChild(buildBoardBtn);
-            title.textContent = 'Enter Dimensions';
+            title.textContent = 'Enter Positive Non-Zero Dimensions';
 
             // display build board form
             const dimensionForm = document.createElement('form');
@@ -30,14 +29,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function processDimensions(dimensionForm) {
+        const rowInputBox = document.getElementById('rowlength');
+        const colInputBox = document.getElementById('columnlength');
+
         dimensionForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            const totalRows = dimensionForm.querySelector('input[id="rowlength"]').value;
-            const totalCols = dimensionForm.querySelector('input[id="columnlength"]').value;
+            const totalRows = rowInputBox.value;
+            const totalCols = colInputBox.value;
 
-            console.log(totalRows);
-            console.log(totalCols);
+
+            if (totalRows != 0 && totalCols != 0) {
+                console.log('Valid Rows and Columns');
+
+                formcontainer.removeChild(dimensionForm);
+            }
+
+            if (totalRows == 0) {
+                rowInputBox.classList.add('error');
+            } else {
+                rowInputBox.classList.remove('error');
+            }
+
+            if (totalCols == 0) {
+                colInputBox.classList.add('error');
+            } else {
+                colInputBox.classList.remove('error');
+            }
 
         });
+    }
+
+    function processWord() {
+        title.textContent = 'Enter a word'
     }
 });
