@@ -42,24 +42,27 @@ h1 {
 .dimension {
     width: 80px;
     height: 80px;
-}
 
-input.dimension {
     text-align: center; 
     font-size: 2em;
+    color: black;
+
+    border: 3px solid gray;
+
+    outline: none;
 }
 
-input.dimension {
-    color: red;
+.error {
+    border-color: red;
 }
 
 #betweenrowscols {
     font-size: 60px;
 }
 
-input {
+/* input {
     border: 3px solid #ccc;
-}
+} */
 
 .button {
     width: 300px;
@@ -77,6 +80,3 @@ input {
     background-color: #8cd3ff;
     color: white;
 }
-
-
-
