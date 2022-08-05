@@ -23,7 +23,7 @@ body {
 }
 
 h1 {
-    font-size: 60px;
+    font-size: 40px;
 }
 
 .formcontainer {
@@ -39,6 +39,7 @@ h1 {
     
     margin: 20px;
 }
+
 .dimension {
     width: 80px;
     height: 80px;
@@ -60,9 +61,11 @@ h1 {
     font-size: 60px;
 }
 
-/* input {
-    border: 3px solid #ccc;
-} */
+#wordfield {
+    font-size: 20px;
+    height: 50px;
+    width: 500px;
+}
 
 .button {
     width: 300px;
