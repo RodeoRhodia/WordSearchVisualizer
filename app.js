@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    var BOARD = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]];
-    const WORD = 'erv';
+    var BOARD = [["o","a","h","h"],["e","t","a","e"],["t","a","m","d"],["s","a","p","e"]];
+    const WORD = 'stampede';
     const ROWS = BOARD.length;
     const COLS = BOARD[0].length;
     const TOTAL_SQUARES = ROWS * COLS;
 
     // speed of algorithm visualizer will be set by user
-    var SECONDS = 0.5;
+    var SECONDS = 0.1;
 
     // indicates weather the word was found in the board, false by default
-    let result = false;
+    let FOUND = false;
 
     // fixed directions for up down left right
     const DIRECTIONS = [[-1, 0], [1, 0], [0, -1], [0, 1]];
@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let markSquareAsProcessed = (r, c) => {
         let nthSquare = calculateNthSquare(r, c);
         let square = document.getElementById(`square-${nthSquare}`);
+        
+        square.style.transition = 'initial';
+
         square.style.backgroundColor = 'orange';
         square.style.color = 'white';
     }
@@ -53,6 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let markSquareAsVisitedInCurrentPath = (r, c) => {
         let nthSquare = calculateNthSquare(r, c);
         let square = document.getElementById(`square-${nthSquare}`);
+
+        square.style.transition = 'ease-in 0.5s';
+
         square.style.backgroundColor = 'salmon';
         square.style.color = 'white';
     }
@@ -61,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let nthSquare = calculateNthSquare(r, c);
         let square = document.getElementById(`square-${nthSquare}`);
         let letter = BOARD[r][c];
+
         if (letter == letter.toUpperCase()) {
             square.style.backgroundColor = 'orange';
             square.style.color = 'white';
@@ -91,16 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (WORD[0] == BOARD[r][c].toLowerCase() ) {
                     await sleep();
                     // waiting for the result to be found
-                    result = await dfs(r, c, 0);
+                    FOUND = await dfs(r, c, 0);
 
-                    if (result) {
-                        return result;
+                    if (FOUND) {
+                        return FOUND;
                     }
                 }
             }
         }
 
-        return result;
+        return FOUND;
     }
 
     /**
@@ -134,8 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // prints current state of the board
         // LATER IMPLEMENT THIS AS 'marking as salmon pink', it is in the current dfs visited path
-        await sleep();
-        markSquareAsVisitedInCurrentPath(r, c)
+
+        // only mark as visited if it has not been found
+        if (!FOUND) {
+            await sleep();
+            markSquareAsVisitedInCurrentPath(r, c)
+        }
+
 
         // increment index to move on to next letter in word
         index += 1;
@@ -154,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let answer = await dfs(r + dr, c + dc, index);
 
             if (answer) {
-                result = true;
+                FOUND = true;
             }
         }
 
@@ -164,20 +176,24 @@ document.addEventListener('DOMContentLoaded', () => {
          */
         BOARD[r][c] = letter;
 
-        // display the backtracking of algorithm
-        await sleep();
-        unmarkSquareAsVisitedInCurrentPath(r, c);
+        // // only display the backtracking if it has not been found
+        if (!FOUND) {
+            await sleep();
+            unmarkSquareAsVisitedInCurrentPath(r, c);
+        }
 
-        return result;
+
+
+        return FOUND;
     }
 
     /**
      * Perform a search on the board which includes a delayed display of the result.
      */
     async function searchBoard() {
-        result = await processBoard(); 
+        FOUND = await processBoard(); 
         await sleep();
-        console.log(result);    
+        console.log(FOUND);    
     }
 
     // Playing the demo
