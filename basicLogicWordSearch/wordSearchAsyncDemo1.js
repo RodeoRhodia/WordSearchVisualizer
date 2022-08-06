@@ -1,5 +1,5 @@
 // display board and word given user input
-var BOARD = [['H', 'H'], ['H', 'I']];
+var BOARD = [['H', 'H'], ['H', 'H']];
 var WORD = "HI";
 
 // get the fixed length of board
