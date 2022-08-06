@@ -14,7 +14,6 @@ body {
 #container {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
 }
 
@@ -79,7 +78,47 @@ h1 {
     transition-duration: 0.4s;
 }
 
+.buttonbuilding {
+    margin-top: 50px;
+    width: 300px;
+    height: 100px;
+    border: none;
+    color: white;
+    background-color: gray;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1.75rem;
+}
+
 .button:hover {
     background-color: #8cd3ff;
     color: white;
+}
+
+#board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+#board {
+    display: grid;
+    grid-gap: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.square {
+    border: 2px solid rgb(58, 58, 60);
+    min-width: 80px;
+    min-height: 80px;
+    font-size: 50px;
+    font-weight: bold;
+    background-color: white;
+    text-transform: capitalize;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
