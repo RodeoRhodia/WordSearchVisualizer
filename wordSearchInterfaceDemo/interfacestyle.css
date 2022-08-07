@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+html, 
+body {
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    font-weight: lighter;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#navbar {
+    margin-top: 50px;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.formcontainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    min-height: 50vh;    
+}
+
+.buttoncontainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.formitem {
+    
+    margin: 20px;
+}
+
+.dimension {
+    width: 80px;
+    height: 80px;
+
+    text-align: center; 
+    font-size: 2em;
+    color: black;
+
+    border: 3px solid gray;
+
+    outline: none;
+}
+
+.error {
+    border-color: red;
+}
+
+#betweenrowscols {
+    font-size: 60px;
+}
+
+#wordfield {
+    font-size: 20px;
+    height: 50px;
+    width: 500px;
+}
+
+.button {
+    margin-top: 50px;
+    width: 300px;
+    height: 100px;
+    border: none;
+    color: white;
+    background-color: #0da2ff;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1.75rem;
+    transition-duration: 0.4s;
+}
+
+.buttonbuilding {
+    margin-top: 50px;
+    width: 300px;
+    height: 100px;
+    border: none;
+    color: white;
+    background-color: gray;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1.75rem;
+    transition-duration: 0.4s;
+}
+
+.button:hover {
+    background-color: #8cd3ff;
+    color: white;
+}
+
+#board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+#board {
+    display: grid;
+    grid-gap: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.square {
+    border: 2px solid rgb(58, 58, 60);
+    min-width: 80px;
+    min-height: 80px;
+    font-size: 50px;
+    font-weight: bold;
+    background-color: white;
+    text-transform: capitalize;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    bottom: 10px;
+  }
