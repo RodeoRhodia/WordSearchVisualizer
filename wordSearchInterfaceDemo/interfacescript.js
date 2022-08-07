@@ -173,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 square.classList.add('square');
                 let nthSquare = calculateNthSquare(r, c);
                 square.setAttribute('id', `square-${nthSquare}`);
-                square.textContent = BOARD[r][c];
                 gameBoard.appendChild(square);                
             }
         }
