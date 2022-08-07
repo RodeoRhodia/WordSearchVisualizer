@@ -3,12 +3,13 @@ html,
 body {
     height: 100%;
     font-family: 'Inter', sans-serif;
+    font-weight: lighter;
 }
 
 * {
     margin: 0;
     padding: 0;
-    background-color: lightsalmon;
+    background-color: white;
 }
 
 #container {
@@ -32,6 +33,11 @@ h1 {
     align-items: center;
     text-align: center;
     min-height: 50vh;    
+}
+
+.buttoncontainer {
+    display: flex;
+    flex-direction: column;
 }
 
 .formitem {
@@ -124,3 +130,12 @@ h1 {
     justify-content: center;
     align-items: center;
 }
+
+#footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    bottom: 10px;
+  }
