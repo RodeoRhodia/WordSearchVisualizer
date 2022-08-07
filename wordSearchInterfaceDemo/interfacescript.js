@@ -11,23 +11,85 @@ document.addEventListener('DOMContentLoaded', () => {
     let TOTAL_SQUARES = null;
     
     // speed of algorithm visualizer will be set by user
-    var SECONDS = 0.2;
+    var SECONDS = 0.1;
 
     // indicates weather the word was found in the board, false by default
     let FOUND = false;
 
     // fixed directions for up down left right
     const DIRECTIONS = [[-1, 0], [1, 0], [0, -1], [0, 1]];
-
-    enableBuildBoardButton();
-
+    
+    // Elements that are often edited in the interface
     let formcontainer = document.querySelector('.formcontainer');
     let title = document.getElementById('title');
+    let playDemoBtn = document.getElementById('playdemobtn');
+    let buildBoardBtn = document.getElementById('buildboardbtn');
 
+    enableBuildBoardButton();
+    enablePlayDemoButton();
+
+    function clearInitialButtons() {
+        let buttoncontainer = document.getElementById('buttoncontainer');
+        formcontainer.removeChild(buttoncontainer);
+    }
+
+    function enablePlayDemoButton() {
+        playDemoBtn.addEventListener('click', () => {
+            clearInitialButtons();
+
+            BOARD = [
+                ['r', 'h', 'o', 'e', 'g', 'a', 's'],
+                ['l', 'a', 's', 'v', 'e', 'j', 'o'],
+                ['a', 'v', 'e', 'r', 'g', 'e', 'l'],
+                ['n', 'e', 'g', 'e', 't', 'a', 'b'],
+                ['d', 't', 'w', 'n', 'a', 'c', 'h'],
+                ['l', 'd', 'i', 'm', 'g', 'e', 'v'],
+                ['w', 's', 'p', 'e', 'u', 'd', 'z']
+            ];
+            WORD = 'vegan';
+            ROWS = BOARD.length;
+            COLS = BOARD[0].length;
+            TOTAL_SQUARES = ROWS * COLS;
+
+            const gameDiv = document.createElement('div');
+
+            gameDiv.innerHTML = 
+                `<div id="board-container">
+                    <div id="board">
+                    </div>
+                </div>`;
+
+            gameDiv.setAttribute('id', 'game');
+            
+            let parentContainer = formcontainer.parentElement;
+            parentContainer.appendChild(gameDiv);
+
+            formcontainer.parentElement.removeChild(formcontainer);
+
+            const gameBoard = document.getElementById('board');
+            gameBoard.style.setProperty('grid-template-columns', `repeat(${COLS}, 1fr)`);
+    
+            // itreate through user input data, board array while also constructing squares in game board
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    let square = document.createElement('div');
+                    square.classList.add('square');
+                    let nthSquare = calculateNthSquare(r, c);
+                    square.setAttribute('id', `square-${nthSquare}`);
+                    square.textContent = BOARD[r][c];
+                    gameBoard.appendChild(square);                
+                }
+            }
+            title.textContent = `Searching for "${WORD.toUpperCase()}"`;
+            waitForResult();
+        });
+
+
+    }
     function enableBuildBoardButton() {
-        let buildBoardBtn = document.getElementById('buildboardbtn');
         buildBoardBtn.addEventListener('click', () => {
-            formcontainer.removeChild(buildBoardBtn);
+            clearInitialButtons();
+
             title.textContent = 'Enter dimension lengths between 1-7';
 
             // display build board form
@@ -78,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 rowInputBox.classList.remove('error');
                 colInputBox.classList.remove('error');
 
-                console.log('Valid Rows and Columns');
+                // console.log('Valid Rows and Columns');
                 ROWS = totalRows;
                 COLS = totalCols;
                 initializeBoard(totalRows, totalCols);
@@ -122,9 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
             WORD = inputWord.toLowerCase();
             formcontainer.removeChild(wordForm);
 
-            console.log(`ROWS: ${ROWS}`);
-            console.log(`COLS: ${COLS}`);
-            console.log(`WORD: ${WORD}`);
+            // console.log(`ROWS: ${ROWS}`);
+            // console.log(`COLS: ${COLS}`);
+            // console.log(`WORD: ${WORD}`);
 
             const gameDiv = document.createElement('div');
 
@@ -160,6 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createSquares() {
+        let footer = document.getElementById('footer');
+        footer.parentElement.removeChild(footer);
+
         title.textContent = 'Enter letters in board, hit backspace to undo:';
         document.getElementById('navbar').style.marginBottom = "50px";
 
@@ -204,14 +269,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 numberOfValidLetters++;
                 let nthSquare = calculateNthSquare(hoverAtRow, hoverAtCol);
-                console.log(`(${hoverAtRow}, ${hoverAtCol}) - ${keyValuePressed} - nthSquare ${nthSquare}`);
+                // console.log(`(${hoverAtRow}, ${hoverAtCol}) - ${keyValuePressed} - nthSquare ${nthSquare}`);
                 
                 let square = document.getElementById(`square-${nthSquare}`);
                 BOARD[hoverAtRow][hoverAtCol] = keyValuePressed.toLowerCase();
                 square.textContent = BOARD[hoverAtRow][hoverAtCol];   
                 
                 if (numberOfValidLetters == TOTAL_SQUARES) {
-                    console.log('total squares exceeded');
+                    // console.log('total squares exceeded');
                     startSearchBtn.classList.remove('buttonbuilding');
                     startSearchBtn.classList.add('button');
                     startSearchBtn.setAttribute('value', 'Start Search');
@@ -235,10 +300,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 numberOfValidLetters--;
-                console.log(`(${hoverAtRow}, ${hoverAtCol}) - ${keyValuePressed}`);
+                // console.log(`(${hoverAtRow}, ${hoverAtCol}) - ${keyValuePressed}`);
                 
                 if (numberOfValidLetters == 0) {
-                    console.log('no squares filled');
+                    // console.log('no squares filled');
                 }
 
                 if (numberOfValidLetters == (TOTAL_SQUARES - 1)) {
@@ -310,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // process the individual grid, mark it as orange
                 await sleep();
                 let nthSquare = calculateNthSquare(r, c);
-                console.log(`${r} ${c} : ${BOARD[r][c]} nth:${nthSquare}`);
+                // console.log(`${r} ${c} : ${BOARD[r][c]} nth:${nthSquare}`);
                 markSquareAsProcessed(r, c);
                 BOARD[r][c] = BOARD[r][c].toUpperCase();
 
@@ -409,6 +474,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * Perform a search on the board which includes a delayed display of the result.
      */
     async function waitForResult() {
+        let footer = document.getElementById('footer');
+        footer.parentElement.removeChild(footer);
+
         FOUND = await processBoard(); 
         await sleep();
         
@@ -417,5 +485,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             document.getElementById('title').textContent = 'Word not found :((';
         }
+
+        let container = document.getElementById('container');
+        container.innerHTML += 
+            '<input type="button" id="startoverbtn" class="button" value="Start Over" onClick="location.href=location.href">';
     }
 });
