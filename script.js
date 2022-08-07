@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let removedfooter = false;
     
     // speed of algorithm visualizer will be set by user
-    var SECONDS = 0.1;
+    var SECONDS = 0.2;
 
     // indicates weather the word was found in the board, false by default
     let FOUND = false;
