@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let WORD = null;
     let TOTAL_SQUARES = null;
     
+    let removedfooter = false;
+    
     // speed of algorithm visualizer will be set by user
     var SECONDS = 0.1;
 
@@ -222,8 +224,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createSquares() {
-        let footer = document.getElementById('footer');
-        footer.parentElement.removeChild(footer);
+        if (!removedfooter) {
+            let footer = document.getElementById('footer');
+            footer.parentElement.removeChild(footer);
+            removedfooter = true;
+        }
 
         title.textContent = 'Enter letters in board, hit backspace to undo:';
         document.getElementById('navbar').style.marginBottom = "50px";
@@ -474,8 +479,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * Perform a search on the board which includes a delayed display of the result.
      */
     async function waitForResult() {
-        let footer = document.getElementById('footer');
-        footer.parentElement.removeChild(footer);
+        if (!removedfooter) {
+            let footer = document.getElementById('footer');
+            footer.parentElement.removeChild(footer);
+            removedfooter = true;
+        }
 
         FOUND = await processBoard(); 
         await sleep();
