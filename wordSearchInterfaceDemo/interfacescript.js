@@ -152,11 +152,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function calculateNthSquare(r, c) {
-        return (r * (ROWS)) + (c + 1);
+        if (r == 0) {
+            return c + 1;
+        } else if (r > 0) {
+            return (COLS * (r)) + (c + 1);
+        }
     }
 
     function createSquares() {
-        title.textContent = 'Enter letters in board, hit backspace to undo:'
+        title.textContent = 'Enter letters in board, hit backspace to undo:';
         document.getElementById('navbar').style.marginBottom = "50px";
 
         const gameBoard = document.getElementById('board');
@@ -169,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 square.classList.add('square');
                 let nthSquare = calculateNthSquare(r, c);
                 square.setAttribute('id', `square-${nthSquare}`);
-                // square.textContent = BOARD[r][c];
+                square.textContent = BOARD[r][c];
                 gameBoard.appendChild(square);                
             }
         }
@@ -189,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let isKeyPressLetter = (keyValuePressed.length == 1 && keyValuePressed.match(letterRegex));
             let isKeypressBackspace = (event.key == 'Backspace');
 
+            // Response when a letter is pressed
             if (isKeyPressLetter && numberOfValidLetters < TOTAL_SQUARES) {
                 hoverAtCol++;
                 if (hoverAtCol >= COLS) {
@@ -199,16 +204,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 numberOfValidLetters++;
-                console.log(`(${hoverAtRow}, ${hoverAtCol}) - ${keyValuePressed}`);
-
+                let nthSquare = calculateNthSquare(hoverAtRow, hoverAtCol);
+                console.log(`(${hoverAtRow}, ${hoverAtCol}) - ${keyValuePressed} - nthSquare ${nthSquare}`);
+                
+                let square = document.getElementById(`square-${nthSquare}`);
+                BOARD[hoverAtRow][hoverAtCol] = keyValuePressed.toLowerCase();
+                square.textContent = BOARD[hoverAtRow][hoverAtCol];   
+                
                 if (numberOfValidLetters == TOTAL_SQUARES) {
                     console.log('total squares exceeded');
-                    // document.removeEventListener('keyup', processKeyboardInput);
-                    // console.log('end of processing??');
+                    startSearchBtn.classList.remove('buttonbuilding');
+                    startSearchBtn.classList.add('button');
+                    startSearchBtn.setAttribute('value', 'Start Search');
+
+                    startSearchBtn.addEventListener('click', startSearch);
                 }
             }
 
+            // Response when backspace is pressed
             if (isKeypressBackspace && numberOfValidLetters > 0) {
+                let nthSquare = calculateNthSquare(hoverAtRow, hoverAtCol);
+                let square = document.getElementById(`square-${nthSquare}`);
+
+                BOARD[hoverAtRow][hoverAtCol] = null;
+                square.textContent = ' ';
+
                 hoverAtCol--;
                 if (hoverAtCol < 0 && hoverAtRow > 0) {
                     hoverAtCol = COLS - 1;
@@ -217,17 +237,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 numberOfValidLetters--;
                 console.log(`(${hoverAtRow}, ${hoverAtCol}) - ${keyValuePressed}`);
-
+                
                 if (numberOfValidLetters == 0) {
                     console.log('no squares filled');
                 }
-            }
 
-            if (numberOfValidLetters == TOTAL_SQUARES) {
-                // CHANGE startsearchbtn status to 'Start Search'
+                if (numberOfValidLetters == (TOTAL_SQUARES - 1)) {
+                    startSearchBtn.classList.remove('button');
+                    startSearchBtn.classList.add('buttonbuilding');
+                    startSearchBtn.setAttribute('value', 'Building...');
+
+                    startSearchBtn.removeEventListener('click', startSearch);
+                }
             }
         }
 
         document.addEventListener('keyup', processKeyboardInput);
+    }
+
+    function startSearch(event) {
+        document.getElementById('title').textContent = `Searching for "${WORD.toUpperCase()}"`;
+        let startSearchBtn = document.getElementById('startsearchbtn');
+        let container = document.getElementById('container');
+        container.removeChild(startSearchBtn);
     }
 });
