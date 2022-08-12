@@ -24,7 +24,7 @@ Visit the GitHub Page: https://rodeorhodia.github.io/WordSearchVisualizer/
     - The interface displays squares of three different colors. Each color represents a 'state'. The grid saves memory by storing the three states in one 'cell' (this is explained further in Examples section).
 * Client-Side Form Validation
     - User can only enter a fixed set of dimensions (bounded by a 1x1 to 7x7 grid) to stop one from entering large sets of data.
-    - The word that will be searched for must be all alphabetical (no numbers or symbols).
+    - The word that will be searched for must be in the alphabet (no numbers or symbols).
     - The word and grid of letters entered is not case sensitive, it is all converted to lowercase letters.
 
 ## Examples
